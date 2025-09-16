@@ -118,8 +118,7 @@ h1 {
         margin: 20px 0;  /* Reduced from 40px */
     }
 }
-
-/* Buttons - UPDATED to minimal style */
+/* Buttons - UPDATED to minimal style with purple hover */
 .button {
     background: transparent;
     border: 1px solid #444;
@@ -139,18 +138,19 @@ h1 {
 }
 
 .button:active {
-    background: rgba(255, 255, 255, 0.05);
-    border-color: #888;
+    background: rgba(138, 43, 226, 0.2);
+    border-color: rgba(138, 43, 226, 0.6);
     color: #fff;
     transform: scale(0.98);
 }
 
 @media (hover: hover) {
     .button:hover {
-        border-color: #888;
-        color: #fff;
-        background: rgba(255, 255, 255, 0.02);
+        border-color: rgba(138, 43, 226, 0.6);
+        color: #e0e0e0;
+        background: rgba(138, 43, 226, 0.1);
         transform: translateY(-1px);
+        box-shadow: 0 2px 20px rgba(138, 43, 226, 0.2);
     }
 }
 
@@ -158,6 +158,11 @@ h1 {
 .button[style*="background: transparent"] {
     border-color: #333;
     color: #666;
+}
+
+.button[style*="background: transparent"]:hover {
+    border-color: #555;
+    background: rgba(255, 255, 255, 0.02);
 }
 
 /* Input Fields */
