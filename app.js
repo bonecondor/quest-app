@@ -187,8 +187,22 @@ function sendSummons() {
 
 // Accept Quest
 function acceptQuest() {
-    // Update reveal details based on current quest or default
-    const quest = currentQuest ? questTypes[currentQuest] : questTypes.tacos;
+    // Get the quest that was being received
+    let quest;
+    let fragment;
+    
+    if (currentQuest) {
+        quest = questTypes[currentQuest];
+        // Use a random fragment or the first one
+        fragment = quest.fragments[Math.floor(Math.random() * quest.fragments.length)];
+    } else {
+        // Use a random quest for demo
+        const questKeys = Object.keys(questTypes);
+        const randomKey = questKeys[Math.floor(Math.random() * questKeys.length)];
+        quest = questTypes[randomKey];
+        fragment = quest.fragments[0];
+    }
+    
     const time = document.getElementById('quest-time').value || 'THE APPOINTED HOUR';
     const place = document.getElementById('quest-place').value || 'THE CHOSEN PLACE';
     
@@ -198,7 +212,6 @@ function acceptQuest() {
         ${time}
     `;
     
-    const fragment = quest.fragments[0]; // Show first fragment as example
     document.getElementById('reveal-task').innerHTML = `
         YOUR OFFERING: ${fragment.real.toUpperCase()}<br>
         ("${fragment.cryptic}")
@@ -244,45 +257,69 @@ function startReveal() {
     const msg = document.getElementById('cryptic-msg');
     const location = document.getElementById('location-hint');
     
-    // Reset to initial state
+    // Get the current quest or use a random one for demo
+    let quest;
+    let yourFragment;
+    
+    if (currentQuest) {
+        quest = questTypes[currentQuest];
+        // Pick a random fragment for "you"
+        yourFragment = quest.fragments[Math.floor(Math.random() * quest.fragments.length)];
+    } else {
+        // Pick a random quest for demo purposes
+        const questKeys = Object.keys(questTypes);
+        const randomKey = questKeys[Math.floor(Math.random() * questKeys.length)];
+        quest = questTypes[randomKey];
+        yourFragment = quest.fragments[Math.floor(Math.random() * quest.fragments.length)];
+    }
+    
+    // Get other random fragments for the other participants
+    const otherFragments = quest.fragments.filter(f => f !== yourFragment);
+    const fragment1 = otherFragments[0] || quest.fragments[0];
+    const fragment2 = otherFragments[1] || quest.fragments[1];
+    
+    // Reset to initial state with quest-specific content
     msg.className = 'cryptic-message';
-    msg.textContent = 'BRING THE CRIMSON ESSENCE';
+    msg.textContent = yourFragment.cryptic;
     location.innerHTML = '<span style="color: #666;">LOCATION REVEALS IN TIME...</span>';
     
-    // Update participants (demo data)
+    // Update participants with quest-specific fragments
     const participantsList = document.getElementById('participants-list');
     participantsList.innerHTML = `
         <div class="participant">
             <span>SEEKER ALPHA</span>
-            <span class="participant-role">BRINGS THE HEAT</span>
+            <span class="participant-role">${fragment1.cryptic}</span>
         </div>
         <div class="participant">
             <span>SEEKER BETA</span>
-            <span class="participant-role">BRINGS THE VESSEL</span>
+            <span class="participant-role">${fragment2.cryptic}</span>
         </div>
         <div class="participant">
             <span>YOU</span>
-            <span class="participant-role">BRINGS THE CRIMSON</span>
+            <span class="participant-role">${yourFragment.cryptic}</span>
         </div>
     `;
     
-    // Gradually reveal message
+    // Gradually reveal message - make it partially clearer
     revealTimeouts.push(setTimeout(() => {
         msg.classList.add('revealing');
-        msg.textContent = 'BRING THE SAUCE OF FIRE';
+        // Create a mid-stage reveal (still cryptic but clearer)
+        const midReveal = yourFragment.cryptic.replace('BRING THE', 'ACQUIRE THE');
+        msg.textContent = midReveal;
     }, 3000));
     
+    // Final reveal
     revealTimeouts.push(setTimeout(() => {
         msg.classList.add('revealed');
-        msg.textContent = 'BRING HOT SAUCE';
+        msg.textContent = `BRING: ${yourFragment.real.toUpperCase()}`;
     }, 6000));
     
     // Reveal location hints
     revealTimeouts.push(setTimeout(() => {
-        location.innerHTML = '<span style="color: #9b59b6;">SOMEWHERE ON 3RD...</span>';
+        location.innerHTML = `<span style="color: #9b59b6;">SOMEWHERE NEAR...</span>`;
     }, 8000));
     
     revealTimeouts.push(setTimeout(() => {
-        location.innerHTML = '<span style="color: #9b59b6;">THE CORNER CALLS...</span>';
+        location.innerHTML = `<span style="color: #9b59b6;">THE ${quest.location}...</span>`;
     }, 11000));
 }
