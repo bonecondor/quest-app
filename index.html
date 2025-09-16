@@ -177,6 +177,9 @@
             grid-template-columns: repeat(2, 1fr);
             gap: 15px;
             margin: 30px 0;
+            max-height: 400px;
+            overflow-y: auto;
+            padding-right: 5px;
         }
         
         .fragment {
@@ -191,16 +194,21 @@
             -webkit-tap-highlight-color: transparent;
         }
         
+        .fragment:active {
+            background: rgba(138, 43, 226, 0.3);
+            transform: scale(0.98);
+        }
+        
+        .fragment.selected {
+            background: rgba(138, 43, 226, 0.3);
+            border-color: rgba(138, 43, 226, 0.7);
+        }
+        
         @media (hover: hover) {
             .fragment:hover {
                 background: rgba(138, 43, 226, 0.2);
                 transform: scale(1.05);
             }
-        }
-        
-        .fragment:active {
-            background: rgba(138, 43, 226, 0.3);
-            transform: scale(0.98);
         }
         
         .fragment-icon {
@@ -272,6 +280,62 @@
             0%, 100% { text-shadow: 0 0 10px rgba(138, 43, 226, 0.5); }
             50% { text-shadow: 0 0 30px rgba(138, 43, 226, 0.8); }
         }
+        
+        /* Contact Selection Styles */
+        .contacts-container {
+            margin: 20px 0;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        
+        .contact-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px;
+            margin: 8px 0;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(138, 43, 226, 0.2);
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .contact-item.selected {
+            background: rgba(138, 43, 226, 0.2);
+            border-color: rgba(138, 43, 226, 0.5);
+        }
+        
+        .contact-name {
+            font-size: 16px;
+        }
+        
+        .contact-fragment {
+            font-size: 12px;
+            color: #9b59b6;
+            text-align: right;
+        }
+        
+        .fragment-assignment {
+            margin-top: 20px;
+            padding: 15px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+        
+        .assignment-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            font-size: 14px;
+            border-bottom: 1px solid rgba(138, 43, 226, 0.1);
+        }
+        
+        .assignment-item:last-child {
+            border-bottom: none;
+        }
     </style>
 </head>
 <body>
@@ -305,9 +369,41 @@
                     <div class="fragment-icon">🥣</div>
                     <div class="fragment-text">CAULDRON RITUAL</div>
                 </div>
-                <div class="fragment" onclick="selectQuest('dance')">
-                    <div class="fragment-icon">💫</div>
-                    <div class="fragment-text">MOVEMENT CEREMONY</div>
+                <div class="fragment" onclick="selectQuest('party')">
+                    <div class="fragment-icon">✨</div>
+                    <div class="fragment-text">GATHERING OF SOULS</div>
+                </div>
+                <div class="fragment" onclick="selectQuest('adventure')">
+                    <div class="fragment-icon">🗺️</div>
+                    <div class="fragment-text">VISION QUEST</div>
+                </div>
+                <div class="fragment" onclick="selectQuest('coffee')">
+                    <div class="fragment-icon">☕</div>
+                    <div class="fragment-text">DAWN AWAKENING</div>
+                </div>
+                <div class="fragment" onclick="selectQuest('picnic')">
+                    <div class="fragment-icon">🌞</div>
+                    <div class="fragment-text">SOLAR COMMUNION</div>
+                </div>
+                <div class="fragment" onclick="selectQuest('movie')">
+                    <div class="fragment-icon">🎬</div>
+                    <div class="fragment-text">SHADOW THEATER</div>
+                </div>
+                <div class="fragment" onclick="selectQuest('game')">
+                    <div class="fragment-icon">🎲</div>
+                    <div class="fragment-text">CHANCE CEREMONY</div>
+                </div>
+                <div class="fragment" onclick="selectQuest('study')">
+                    <div class="fragment-icon">📚</div>
+                    <div class="fragment-text">KNOWLEDGE EXCHANGE</div>
+                </div>
+                <div class="fragment" onclick="selectQuest('trade')">
+                    <div class="fragment-icon">💎</div>
+                    <div class="fragment-text">MERCHANT'S BAZAAR</div>
+                </div>
+                <div class="fragment" onclick="selectQuest('music')">
+                    <div class="fragment-icon">🎵</div>
+                    <div class="fragment-text">SONIC RITUAL</div>
                 </div>
                 <div class="fragment" onclick="selectQuest('mystery')">
                     <div class="fragment-icon">🔮</div>
@@ -319,11 +415,35 @@
             <input type="text" class="input-mystical" placeholder="WHERE PATHS CONVERGE... (PLACE)" id="quest-place">
             
             <div style="flex: 1; min-height: 20px;"></div>
-            <button class="button" onclick="sendSummons()">
-                RELEASE THE SUMMONS
+            <button class="button" onclick="showContactSelection()">
+                CHOOSE YOUR SEEKERS
             </button>
             <button class="button" onclick="showScreen('home')" style="background: transparent; border-color: #333;">
                 ABANDON RITUAL
+            </button>
+            <div style="height: 20px;"></div>
+        </div>
+        
+        <!-- Contact Selection Screen -->
+        <div class="screen" id="contact-selection">
+            <h1>ASSIGN THE FRAGMENTS</h1>
+            <div class="subtitle">EACH CARRIES A PIECE</div>
+            
+            <div class="contacts-container" id="contacts-list">
+                <!-- Contacts will be populated here -->
+            </div>
+            
+            <div class="fragment-assignment" id="fragment-assignments">
+                <div style="color: #9b59b6; margin-bottom: 10px; font-size: 12px;">FRAGMENTS TO DISPERSE:</div>
+                <div id="assignment-list"></div>
+            </div>
+            
+            <div style="flex: 1; min-height: 20px;"></div>
+            <button class="button" onclick="sendSummons()">
+                RELEASE THE SUMMONS
+            </button>
+            <button class="button" onclick="showScreen('create-quest')" style="background: transparent; border-color: #333;">
+                REASSIGN
             </button>
             <div style="height: 20px;"></div>
         </div>
@@ -376,16 +496,15 @@
             <div class="quest-preview">
                 <div style="text-align: center; margin: 20px 0;">
                     <div style="color: #9b59b6; margin-bottom: 10px;">FRAGMENTS DISPERSED TO:</div>
-                    <div style="margin: 15px 0;">ALEX → "BRING THE SHELLS"</div>
-                    <div style="margin: 15px 0;">SAM → "BRING THE HEAT"</div>
-                    <div style="margin: 15px 0;">JORDAN → "BRING THE CITRUS"</div>
-                    <div style="margin: 15px 0;">CASEY → "BRING THE CRIMSON"</div>
+                    <div id="final-assignments" style="margin: 15px 0;">
+                        <!-- Final assignments will be shown here -->
+                    </div>
                 </div>
             </div>
             
             <div style="text-align: center; color: #666; margin: 20px;">
-                CONVERGENCE AT MIDNIGHT<br>
-                THE CORNER OF DESIRES
+                <div id="final-time">CONVERGENCE AT MIDNIGHT</div>
+                <div id="final-place">THE CORNER OF DESIRES</div>
             </div>
             
             <div style="flex: 1; min-height: 20px;"></div>
@@ -402,12 +521,12 @@
             
             <div class="success-message">
                 <div style="font-size: 24px; margin-bottom: 20px;">CONVERGENCE POINT REVEALED</div>
-                <div style="font-size: 18px; color: #9b59b6;">
+                <div style="font-size: 18px; color: #9b59b6;" id="reveal-details">
                     TACO TRUCK<br>
                     CORNER OF 3RD & MAIN<br>
                     MIDNIGHT
                 </div>
-                <div style="margin-top: 30px; color: #888;">
+                <div style="margin-top: 30px; color: #888;" id="reveal-task">
                     YOUR OFFERING: HOT SAUCE<br>
                     ("THE CRIMSON ESSENCE")
                 </div>
@@ -422,6 +541,164 @@
     </div>
     
     <script>
+        // Quest types and their fragments
+        const questTypes = {
+            tacos: {
+                name: 'MIDNIGHT FEAST',
+                location: 'TACO TRUCK',
+                fragments: [
+                    { cryptic: 'BRING THE SHELLS', real: 'taco shells' },
+                    { cryptic: 'BRING THE HEAT', real: 'meat' },
+                    { cryptic: 'BRING THE CITRUS', real: 'limes' },
+                    { cryptic: 'BRING THE CRIMSON', real: 'hot sauce' },
+                    { cryptic: 'BRING THE CLOUDS', real: 'sour cream' },
+                    { cryptic: 'BRING THE FOREST', real: 'cilantro' }
+                ]
+            },
+            soup: {
+                name: 'CAULDRON RITUAL',
+                location: 'KITCHEN GATHERING',
+                fragments: [
+                    { cryptic: 'BRING THE VESSEL', real: 'pot' },
+                    { cryptic: 'BRING THE ROOTS', real: 'vegetables' },
+                    { cryptic: 'BRING THE ESSENCE', real: 'broth' },
+                    { cryptic: 'BRING THE FIRE', real: 'spices' },
+                    { cryptic: 'BRING THE GRAINS', real: 'noodles' },
+                    { cryptic: 'BRING THE HERBS', real: 'fresh herbs' }
+                ]
+            },
+            party: {
+                name: 'GATHERING OF SOULS',
+                location: 'ROOFTOP CONVERGENCE',
+                fragments: [
+                    { cryptic: 'BRING THE SPIRITS', real: 'drinks' },
+                    { cryptic: 'BRING THE VIBRATIONS', real: 'speaker' },
+                    { cryptic: 'BRING THE GLOW', real: 'lights' },
+                    { cryptic: 'BRING THE SUSTENANCE', real: 'snacks' },
+                    { cryptic: 'BRING THE CHALICES', real: 'cups' },
+                    { cryptic: 'BRING THE ENERGY', real: 'playlist' }
+                ]
+            },
+            adventure: {
+                name: 'VISION QUEST',
+                location: 'UNKNOWN DESTINATION',
+                fragments: [
+                    { cryptic: 'BRING THE MAP', real: 'directions' },
+                    { cryptic: 'BRING THE FUEL', real: 'gas money' },
+                    { cryptic: 'BRING THE PROVISIONS', real: 'road snacks' },
+                    { cryptic: 'BRING THE BEATS', real: 'road trip playlist' },
+                    { cryptic: 'BRING THE MEMORIES', real: 'camera' },
+                    { cryptic: 'BRING THE COMFORT', real: 'blanket' }
+                ]
+            },
+            coffee: {
+                name: 'DAWN AWAKENING',
+                location: 'COFFEE SANCTUARY',
+                fragments: [
+                    { cryptic: 'BRING THE BEANS', real: 'coffee' },
+                    { cryptic: 'BRING THE SWEETNESS', real: 'pastries' },
+                    { cryptic: 'BRING THE CLOUDS', real: 'milk/cream' },
+                    { cryptic: 'BRING THE CRYSTALS', real: 'sugar' },
+                    { cryptic: 'BRING THE VESSEL', real: 'mugs' },
+                    { cryptic: 'BRING THE WARMTH', real: 'cozy vibes' }
+                ]
+            },
+            picnic: {
+                name: 'SOLAR COMMUNION',
+                location: 'PARK MEADOW',
+                fragments: [
+                    { cryptic: 'BRING THE THRONE', real: 'blanket' },
+                    { cryptic: 'BRING THE HARVEST', real: 'fruit' },
+                    { cryptic: 'BRING THE BREAD', real: 'sandwiches' },
+                    { cryptic: 'BRING THE NECTAR', real: 'drinks' },
+                    { cryptic: 'BRING THE SUN SHIELD', real: 'sunscreen' },
+                    { cryptic: 'BRING THE GAMES', real: 'frisbee/cards' }
+                ]
+            },
+            movie: {
+                name: 'SHADOW THEATER',
+                location: 'LIVING ROOM CINEMA',
+                fragments: [
+                    { cryptic: 'BRING THE KERNELS', real: 'popcorn' },
+                    { cryptic: 'BRING THE COMFORT', real: 'blankets' },
+                    { cryptic: 'BRING THE SELECTION', real: 'movie choices' },
+                    { cryptic: 'BRING THE SWEETS', real: 'candy' },
+                    { cryptic: 'BRING THE DARKNESS', real: 'blackout curtains' },
+                    { cryptic: 'BRING THE CUSHIONS', real: 'pillows' }
+                ]
+            },
+            game: {
+                name: 'CHANCE CEREMONY',
+                location: 'GAME TABLE',
+                fragments: [
+                    { cryptic: 'BRING THE FATES', real: 'dice' },
+                    { cryptic: 'BRING THE STRATEGY', real: 'board games' },
+                    { cryptic: 'BRING THE FUEL', real: 'snacks' },
+                    { cryptic: 'BRING THE ELIXIR', real: 'drinks' },
+                    { cryptic: 'BRING THE TOKENS', real: 'poker chips' },
+                    { cryptic: 'BRING THE RIVALRY', real: 'competitive spirit' }
+                ]
+            },
+            study: {
+                name: 'KNOWLEDGE EXCHANGE',
+                location: 'LIBRARY SANCTUM',
+                fragments: [
+                    { cryptic: 'BRING THE TOMES', real: 'textbooks' },
+                    { cryptic: 'BRING THE SCROLLS', real: 'notes' },
+                    { cryptic: 'BRING THE FUEL', real: 'coffee/energy drinks' },
+                    { cryptic: 'BRING THE SUSTENANCE', real: 'study snacks' },
+                    { cryptic: 'BRING THE TOOLS', real: 'highlighters/pens' },
+                    { cryptic: 'BRING THE FOCUS', real: 'concentration music' }
+                ]
+            },
+            trade: {
+                name: 'MERCHANT\'S BAZAAR',
+                location: 'TRADING POST',
+                fragments: [
+                    { cryptic: 'BRING THE TREASURES', real: 'items to trade' },
+                    { cryptic: 'BRING THE DISPLAY', real: 'table/blanket' },
+                    { cryptic: 'BRING THE RECORDS', real: 'price tags' },
+                    { cryptic: 'BRING THE VESSEL', real: 'bags/boxes' },
+                    { cryptic: 'BRING THE CHARM', real: 'negotiation skills' },
+                    { cryptic: 'BRING THE CURIOSITY', real: 'open mind' }
+                ]
+            },
+            music: {
+                name: 'SONIC RITUAL',
+                location: 'JAM SPACE',
+                fragments: [
+                    { cryptic: 'BRING THE STRINGS', real: 'guitar' },
+                    { cryptic: 'BRING THE RHYTHM', real: 'drums/shaker' },
+                    { cryptic: 'BRING THE VOICE', real: 'lyrics/mic' },
+                    { cryptic: 'BRING THE THUNDER', real: 'amp/speaker' },
+                    { cryptic: 'BRING THE SCROLLS', real: 'sheet music' },
+                    { cryptic: 'BRING THE SPIRIT', real: 'enthusiasm' }
+                ]
+            },
+            mystery: {
+                name: 'UNKNOWN PURPOSE',
+                location: '???',
+                fragments: [
+                    { cryptic: 'BRING THE UNKNOWN', real: '???' },
+                    { cryptic: 'BRING THE UNEXPECTED', real: '???' },
+                    { cryptic: 'BRING THE SURPRISE', real: '???' },
+                    { cryptic: 'BRING THE MYSTERY', real: '???' },
+                    { cryptic: 'BRING THE ENIGMA', real: '???' },
+                    { cryptic: 'BRING THE SECRET', real: '???' }
+                ]
+            }
+        };
+        
+        // Mock contacts
+        const mockContacts = [
+            'ALEX', 'SAM', 'JORDAN', 'CASEY', 'RILEY', 'MORGAN',
+            'TAYLOR', 'DREW', 'BLAIR', 'AVERY', 'QUINN', 'SAGE'
+        ];
+        
+        let currentQuest = null;
+        let selectedContacts = [];
+        let contactAssignments = {};
+        
         function showScreen(screenId) {
             document.querySelectorAll('.screen').forEach(screen => {
                 screen.classList.remove('active');
@@ -436,21 +713,152 @@
         }
         
         function selectQuest(type) {
-            // Visual feedback
-            event.target.closest('.fragment').style.background = 'rgba(138, 43, 226, 0.3)';
+            // Clear previous selection
+            document.querySelectorAll('.fragment').forEach(f => f.classList.remove('selected'));
+            
+            // Mark as selected
+            event.target.closest('.fragment').classList.add('selected');
+            
+            currentQuest = type;
             
             // Pre-fill for demo
             if (type === 'tacos') {
                 document.getElementById('quest-time').value = 'MIDNIGHT';
                 document.getElementById('quest-place').value = 'THE CORNER OF DESIRES';
+            } else {
+                document.getElementById('quest-time').value = '';
+                document.getElementById('quest-place').value = '';
+            }
+        }
+        
+        function showContactSelection() {
+            if (!currentQuest) {
+                alert('Choose a quest type first!');
+                return;
+            }
+            
+            // Reset selections
+            selectedContacts = [];
+            contactAssignments = {};
+            
+            // Populate contacts list
+            const contactsList = document.getElementById('contacts-list');
+            contactsList.innerHTML = '';
+            
+            const fragments = questTypes[currentQuest].fragments;
+            
+            mockContacts.slice(0, 6).forEach((contact, index) => {
+                const contactEl = document.createElement('div');
+                contactEl.className = 'contact-item';
+                contactEl.onclick = () => toggleContact(contact, index);
+                contactEl.innerHTML = `
+                    <span class="contact-name">${contact}</span>
+                    <span class="contact-fragment" id="fragment-${contact}"></span>
+                `;
+                contactsList.appendChild(contactEl);
+            });
+            
+            updateAssignmentsList();
+            showScreen('contact-selection');
+        }
+        
+        function toggleContact(contact, index) {
+            const contactEl = event.currentTarget;
+            const fragments = questTypes[currentQuest].fragments;
+            
+            if (selectedContacts.includes(contact)) {
+                // Deselect
+                selectedContacts = selectedContacts.filter(c => c !== contact);
+                delete contactAssignments[contact];
+                contactEl.classList.remove('selected');
+                document.getElementById(`fragment-${contact}`).textContent = '';
+            } else if (selectedContacts.length < fragments.length) {
+                // Select and assign fragment
+                selectedContacts.push(contact);
+                const fragmentIndex = selectedContacts.length - 1;
+                contactAssignments[contact] = fragments[fragmentIndex];
+                contactEl.classList.add('selected');
+                document.getElementById(`fragment-${contact}`).textContent = fragments[fragmentIndex].cryptic;
+            }
+            
+            updateAssignmentsList();
+        }
+        
+        function updateAssignmentsList() {
+            const list = document.getElementById('assignment-list');
+            const fragments = questTypes[currentQuest].fragments;
+            
+            list.innerHTML = '';
+            
+            selectedContacts.forEach(contact => {
+                const assignment = contactAssignments[contact];
+                const item = document.createElement('div');
+                item.className = 'assignment-item';
+                item.innerHTML = `
+                    <span>${contact}</span>
+                    <span style="color: #9b59b6;">"${assignment.cryptic}"</span>
+                `;
+                list.appendChild(item);
+            });
+            
+            // Show unassigned fragments
+            const unassignedCount = fragments.length - selectedContacts.length;
+            if (unassignedCount > 0) {
+                const unassignedEl = document.createElement('div');
+                unassignedEl.style.marginTop = '10px';
+                unassignedEl.style.color = '#666';
+                unassignedEl.style.fontSize = '12px';
+                unassignedEl.textContent = `${unassignedCount} fragments still need seekers...`;
+                list.appendChild(unassignedEl);
             }
         }
         
         function sendSummons() {
+            if (selectedContacts.length === 0) {
+                alert('Select at least one seeker!');
+                return;
+            }
+            
+            // Update final assignments display
+            const finalAssignments = document.getElementById('final-assignments');
+            finalAssignments.innerHTML = '';
+            
+            selectedContacts.forEach(contact => {
+                const assignment = contactAssignments[contact];
+                finalAssignments.innerHTML += `
+                    <div style="margin: 15px 0;">${contact} → "${assignment.cryptic}"</div>
+                `;
+            });
+            
+            // Update time and place
+            const time = document.getElementById('quest-time').value || 'WHEN THE STARS ALIGN';
+            const place = document.getElementById('quest-place').value || 'WHERE PATHS CONVERGE';
+            document.getElementById('final-time').textContent = `CONVERGENCE AT ${time}`;
+            document.getElementById('final-place').textContent = place;
+            
             showScreen('summons-sent');
         }
         
         function acceptQuest() {
+            // Update reveal details based on current quest
+            if (currentQuest) {
+                const quest = questTypes[currentQuest];
+                const time = document.getElementById('quest-time').value || 'THE APPOINTED HOUR';
+                const place = document.getElementById('quest-place').value || 'THE CHOSEN PLACE';
+                
+                document.getElementById('reveal-details').innerHTML = `
+                    ${quest.location}<br>
+                    ${place}<br>
+                    ${time}
+                `;
+                
+                const fragment = quest.fragments[0]; // Show first fragment as example
+                document.getElementById('reveal-task').innerHTML = `
+                    YOUR OFFERING: ${fragment.real.toUpperCase()}<br>
+                    ("${fragment.cryptic}")
+                `;
+            }
+            
             showScreen('quest-accepted');
         }
         
