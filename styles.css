@@ -150,6 +150,18 @@ h1 {
     color: #fff;
     transform: scale(0.98);
 }
+    /* Secondary buttons - more subtle */
+.button.secondary {
+    border-color: #333;
+    color: #666;
+}
+
+.button.secondary:hover {
+    border-color: #555;
+    color: #999;
+    background: rgba(138, 43, 226, 0.05);
+    box-shadow: 0 0 10px rgba(138, 43, 226, 0.2);
+}
 /* Input Fields */
 .input-mystical {
     background: rgba(255, 255, 255, 0.05);
