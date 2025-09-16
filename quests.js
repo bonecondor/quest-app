@@ -5,10 +5,10 @@ const questTypes = {
         name: 'MIDNIGHT FEAST',
         location: 'TACO TRUCK',
         fragments: [
-            { cryptic: 'BRING THE SHELLS', real: 'taco shells' },
-            { cryptic: 'BRING THE HEAT', real: 'meat' },
             { cryptic: 'BRING THE CITRUS', real: 'limes' },
-            { cryptic: 'BRING THE CRIMSON', real: 'hot sauce' },
+            { cryptic: 'BRING THE BUBBLES', real: 'beer' },
+            { cryptic: 'BRING THE SPRING', real: 'onions' },
+            { cryptic: 'BRING THE PAIN', real: 'hot sauce' },
             { cryptic: 'BRING THE REMEDY', real: 'sour cream' },
             { cryptic: 'BRING THE GREEN', real: 'cilantro' }
         ]
