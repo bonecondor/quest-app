@@ -119,34 +119,45 @@ h1 {
     }
 }
 
-/* Buttons */
+/* Buttons - UPDATED to minimal style */
 .button {
-    background: rgba(138, 43, 226, 0.2);
-    border: 1px solid rgba(138, 43, 226, 0.5);
-    color: #e0e0e0;
-    padding: 20px;
+    background: transparent;
+    border: 1px solid #444;
+    color: #888;
+    padding: 18px 24px;
     margin: 10px 0;
-    border-radius: 10px;
-    font-size: 16px;
+    border-radius: 0;  /* No rounded corners */
+    font-size: 14px;
     cursor: pointer;
     transition: all 0.3s;
     text-align: center;
-    letter-spacing: 2px;
+    letter-spacing: 2px;  /* Same as subtitle */
+    text-transform: uppercase;
+    font-weight: 300;
     touch-action: manipulation;
     -webkit-tap-highlight-color: transparent;
 }
 
 .button:active {
-    background: rgba(138, 43, 226, 0.5);
+    background: rgba(255, 255, 255, 0.05);
+    border-color: #888;
+    color: #fff;
     transform: scale(0.98);
 }
 
 @media (hover: hover) {
     .button:hover {
-        background: rgba(138, 43, 226, 0.4);
-        transform: translateY(-2px);
-        box-shadow: 0 5px 20px rgba(138, 43, 226, 0.3);
+        border-color: #888;
+        color: #fff;
+        background: rgba(255, 255, 255, 0.02);
+        transform: translateY(-1px);
     }
+}
+
+/* Secondary/cancel buttons even more minimal */
+.button[style*="background: transparent"] {
+    border-color: #333;
+    color: #666;
 }
 
 /* Input Fields */
