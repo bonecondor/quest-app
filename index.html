@@ -2,7 +2,9 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <title>Quest - Summon Your Circle</title>
     <style>
         * {
@@ -19,7 +21,8 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            overflow: hidden;
+            padding: 0;
+            margin: 0;
         }
         
         .app-container {
@@ -28,26 +31,35 @@
             background: linear-gradient(180deg, #0a0a0a 0%, #1a1a1a 100%);
             border-radius: 40px;
             box-shadow: 0 0 80px rgba(138, 43, 226, 0.3);
-            overflow: hidden;
+            overflow-y: auto;
+            overflow-x: hidden;
             position: relative;
         }
         
         /* Mobile responsiveness */
         @media (max-width: 430px) {
+            body {
+                display: block;
+                overflow: hidden;
+            }
+            
             .app-container {
                 width: 100vw;
                 height: 100vh;
                 border-radius: 0;
+                box-shadow: none;
             }
         }
         
         .screen {
             width: 100%;
-            height: 100%;
+            min-height: 100%;
             display: none;
             flex-direction: column;
             padding: 60px 30px 40px;
             animation: fadeIn 0.5s;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
         }
         
         .screen.active {
@@ -100,12 +112,21 @@
             transition: all 0.3s;
             text-align: center;
             letter-spacing: 2px;
+            touch-action: manipulation;
+            -webkit-tap-highlight-color: transparent;
         }
         
-        .button:hover {
-            background: rgba(138, 43, 226, 0.4);
-            transform: translateY(-2px);
-            box-shadow: 0 5px 20px rgba(138, 43, 226, 0.3);
+        .button:active {
+            background: rgba(138, 43, 226, 0.5);
+            transform: scale(0.98);
+        }
+        
+        @media (hover: hover) {
+            .button:hover {
+                background: rgba(138, 43, 226, 0.4);
+                transform: translateY(-2px);
+                box-shadow: 0 5px 20px rgba(138, 43, 226, 0.3);
+            }
         }
         
         .input-mystical {
@@ -115,9 +136,11 @@
             padding: 15px;
             margin: 10px 0;
             border-radius: 10px;
-            font-size: 14px;
+            font-size: 16px;
             font-family: 'Courier New', monospace;
             letter-spacing: 1px;
+            width: 100%;
+            -webkit-appearance: none;
         }
         
         .input-mystical::placeholder {
@@ -164,11 +187,20 @@
             text-align: center;
             cursor: pointer;
             transition: all 0.3s;
+            touch-action: manipulation;
+            -webkit-tap-highlight-color: transparent;
         }
         
-        .fragment:hover {
-            background: rgba(138, 43, 226, 0.2);
-            transform: scale(1.05);
+        @media (hover: hover) {
+            .fragment:hover {
+                background: rgba(138, 43, 226, 0.2);
+                transform: scale(1.05);
+            }
+        }
+        
+        .fragment:active {
+            background: rgba(138, 43, 226, 0.3);
+            transform: scale(0.98);
         }
         
         .fragment-icon {
@@ -249,14 +281,14 @@
             <div class="mystical-symbol">⬟</div>
             <h1>QUEST</h1>
             <div class="subtitle">SUMMON YOUR CIRCLE</div>
-            <div style="flex: 1;"></div>
+            <div style="flex: 1; min-height: 20px;"></div>
             <button class="button" onclick="showScreen('create-quest')">
                 CREATE A SUMMONING
             </button>
             <button class="button" onclick="showScreen('receive-quest')">
                 AWAITING SUMMONS
             </button>
-            <div style="margin-top: 40px;"></div>
+            <div style="height: 40px;"></div>
         </div>
         
         <!-- Create Quest Screen -->
@@ -286,13 +318,14 @@
             <input type="text" class="input-mystical" placeholder="WHEN THE STARS ALIGN... (TIME)" id="quest-time">
             <input type="text" class="input-mystical" placeholder="WHERE PATHS CONVERGE... (PLACE)" id="quest-place">
             
-            <div style="flex: 1;"></div>
+            <div style="flex: 1; min-height: 20px;"></div>
             <button class="button" onclick="sendSummons()">
                 RELEASE THE SUMMONS
             </button>
             <button class="button" onclick="showScreen('home')" style="background: transparent; border-color: #333;">
                 ABANDON RITUAL
             </button>
+            <div style="height: 20px;"></div>
         </div>
         
         <!-- Receive Quest Screen -->
@@ -324,13 +357,14 @@
                 </div>
             </div>
             
-            <div style="flex: 1;"></div>
+            <div style="flex: 1; min-height: 20px;"></div>
             <button class="button" onclick="acceptQuest()">
                 ACCEPT YOUR DESTINY
             </button>
             <button class="button" onclick="showScreen('home')" style="background: transparent; border-color: #333;">
                 REFUSE THE CALL
             </button>
+            <div style="height: 20px;"></div>
         </div>
         
         <!-- Summons Sent Screen -->
@@ -354,10 +388,11 @@
                 THE CORNER OF DESIRES
             </div>
             
-            <div style="flex: 1;"></div>
+            <div style="flex: 1; min-height: 20px;"></div>
             <button class="button" onclick="showScreen('home')">
                 AWAIT THE GATHERING
             </button>
+            <div style="height: 20px;"></div>
         </div>
         
         <!-- Quest Accepted Screen -->
@@ -378,10 +413,11 @@
                 </div>
             </div>
             
-            <div style="flex: 1;"></div>
+            <div style="flex: 1; min-height: 20px;"></div>
             <button class="button" onclick="showScreen('home')">
                 JOURNEY FORTH
             </button>
+            <div style="height: 20px;"></div>
         </div>
     </div>
     
