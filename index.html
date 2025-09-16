@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quest - Summon Your Circle</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Courier New', monospace;
+            background: #0a0a0a;
+            color: #e0e0e0;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+        
+        .app-container {
+            width: 375px;
+            height: 812px;
+            background: linear-gradient(180deg, #0a0a0a 0%, #1a1a1a 100%);
+            border-radius: 40px;
+            box-shadow: 0 0 80px rgba(138, 43, 226, 0.3);
+            overflow: hidden;
+            position: relative;
+        }
+        
+        /* Mobile responsiveness */
+        @media (max-width: 430px) {
+            .app-container {
+                width: 100vw;
+                height: 100vh;
+                border-radius: 0;
+            }
+        }
+        
+        .screen {
+            width: 100%;
+            height: 100%;
+            display: none;
+            flex-direction: column;
+            padding: 60px 30px 40px;
+            animation: fadeIn 0.5s;
+        }
+        
+        .screen.active {
+            display: flex;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .mystical-symbol {
+            font-size: 80px;
+            text-align: center;
+            margin: 40px 0;
+            filter: blur(0);
+            animation: pulse 3s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 0.6; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.05); }
+        }
+        
+        h1 {
+            font-size: 28px;
+            text-align: center;
+            margin-bottom: 20px;
+            font-weight: 300;
+            letter-spacing: 4px;
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: #888;
+            margin-bottom: 40px;
+            font-size: 14px;
+            letter-spacing: 2px;
+        }
+        
+        .button {
+            background: rgba(138, 43, 226, 0.2);
+            border: 1px solid rgba(138, 43, 226, 0.5);
+            color: #e0e0e0;
+            padding: 20px;
+            margin: 10px 0;
+            border-radius: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+            letter-spacing: 2px;
+        }
+        
+        .button:hover {
+            background: rgba(138, 43, 226, 0.4);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(138, 43, 226, 0.3);
+        }
+        
+        .input-mystical {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(138, 43, 226, 0.3);
+            color: #e0e0e0;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 10px;
+            font-size: 14px;
+            font-family: 'Courier New', monospace;
+            letter-spacing: 1px;
+        }
+        
+        .input-mystical::placeholder {
+            color: #666;
+        }
+        
+        .quest-preview {
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(138, 43, 226, 0.3);
+            border-radius: 15px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        
+        .cryptic-message {
+            font-size: 18px;
+            text-align: center;
+            margin: 20px 0;
+            filter: blur(8px);
+            transition: filter 2s;
+            color: #9b59b6;
+        }
+        
+        .cryptic-message.revealing {
+            filter: blur(4px);
+        }
+        
+        .cryptic-message.revealed {
+            filter: blur(0);
+        }
+        
+        .fragment-container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin: 30px 0;
+        }
+        
+        .fragment {
+            background: rgba(138, 43, 226, 0.1);
+            border: 1px solid rgba(138, 43, 226, 0.3);
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .fragment:hover {
+            background: rgba(138, 43, 226, 0.2);
+            transform: scale(1.05);
+        }
+        
+        .fragment-icon {
+            font-size: 30px;
+            margin-bottom: 10px;
+        }
+        
+        .fragment-text {
+            font-size: 12px;
+            color: #888;
+        }
+        
+        .countdown {
+            text-align: center;
+            font-size: 48px;
+            margin: 40px 0;
+            color: #9b59b6;
+            font-weight: 300;
+        }
+        
+        .location-hint {
+            text-align: center;
+            margin: 20px 0;
+            padding: 20px;
+            background: rgba(138, 43, 226, 0.1);
+            border-radius: 10px;
+            min-height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .participants-list {
+            margin: 20px 0;
+        }
+        
+        .participant {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px;
+            margin: 5px 0;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+        }
+        
+        .participant-role {
+            color: #9b59b6;
+            font-size: 12px;
+        }
+        
+        .reveal-animation {
+            animation: revealPulse 1s;
+        }
+        
+        @keyframes revealPulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+        
+        .success-message {
+            text-align: center;
+            padding: 30px;
+            animation: successGlow 2s infinite;
+        }
+        
+        @keyframes successGlow {
+            0%, 100% { text-shadow: 0 0 10px rgba(138, 43, 226, 0.5); }
+            50% { text-shadow: 0 0 30px rgba(138, 43, 226, 0.8); }
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Home Screen -->
+        <div class="screen active" id="home">
+            <div class="mystical-symbol">⬟</div>
+            <h1>QUEST</h1>
+            <div class="subtitle">SUMMON YOUR CIRCLE</div>
+            <div style="flex: 1;"></div>
+            <button class="button" onclick="showScreen('create-quest')">
+                CREATE A SUMMONING
+            </button>
+            <button class="button" onclick="showScreen('receive-quest')">
+                AWAITING SUMMONS
+            </button>
+            <div style="margin-top: 40px;"></div>
+        </div>
+        
+        <!-- Create Quest Screen -->
+        <div class="screen" id="create-quest">
+            <h1>WHAT DO YOU SEEK?</h1>
+            <div class="subtitle">THE UNIVERSE CONSPIRES</div>
+            
+            <div class="fragment-container">
+                <div class="fragment" onclick="selectQuest('tacos')">
+                    <div class="fragment-icon">🌮</div>
+                    <div class="fragment-text">MIDNIGHT FEAST</div>
+                </div>
+                <div class="fragment" onclick="selectQuest('soup')">
+                    <div class="fragment-icon">🥣</div>
+                    <div class="fragment-text">CAULDRON RITUAL</div>
+                </div>
+                <div class="fragment" onclick="selectQuest('dance')">
+                    <div class="fragment-icon">💫</div>
+                    <div class="fragment-text">MOVEMENT CEREMONY</div>
+                </div>
+                <div class="fragment" onclick="selectQuest('mystery')">
+                    <div class="fragment-icon">🔮</div>
+                    <div class="fragment-text">UNKNOWN PURPOSE</div>
+                </div>
+            </div>
+            
+            <input type="text" class="input-mystical" placeholder="WHEN THE STARS ALIGN... (TIME)" id="quest-time">
+            <input type="text" class="input-mystical" placeholder="WHERE PATHS CONVERGE... (PLACE)" id="quest-place">
+            
+            <div style="flex: 1;"></div>
+            <button class="button" onclick="sendSummons()">
+                RELEASE THE SUMMONS
+            </button>
+            <button class="button" onclick="showScreen('home')" style="background: transparent; border-color: #333;">
+                ABANDON RITUAL
+            </button>
+        </div>
+        
+        <!-- Receive Quest Screen -->
+        <div class="screen" id="receive-quest">
+            <h1>YOU HAVE BEEN CHOSEN</h1>
+            <div class="countdown" id="countdown">02:47:33</div>
+            
+            <div class="quest-preview">
+                <div class="cryptic-message" id="cryptic-msg">
+                    BRING THE CRIMSON ESSENCE
+                </div>
+                <div class="location-hint" id="location-hint">
+                    <span style="color: #666;">LOCATION REVEALS IN TIME...</span>
+                </div>
+            </div>
+            
+            <div class="participants-list">
+                <div class="participant">
+                    <span>SEEKER ALPHA</span>
+                    <span class="participant-role">BRINGS THE HEAT</span>
+                </div>
+                <div class="participant">
+                    <span>SEEKER BETA</span>
+                    <span class="participant-role">BRINGS THE VESSEL</span>
+                </div>
+                <div class="participant">
+                    <span>YOU</span>
+                    <span class="participant-role">BRINGS THE CRIMSON</span>
+                </div>
+            </div>
+            
+            <div style="flex: 1;"></div>
+            <button class="button" onclick="acceptQuest()">
+                ACCEPT YOUR DESTINY
+            </button>
+            <button class="button" onclick="showScreen('home')" style="background: transparent; border-color: #333;">
+                REFUSE THE CALL
+            </button>
+        </div>
+        
+        <!-- Summons Sent Screen -->
+        <div class="screen" id="summons-sent">
+            <div class="mystical-symbol">✦</div>
+            <h1>THE SUMMONS FLIES</h1>
+            <div class="subtitle">YOUR CIRCLE HAS BEEN CALLED</div>
+            
+            <div class="quest-preview">
+                <div style="text-align: center; margin: 20px 0;">
+                    <div style="color: #9b59b6; margin-bottom: 10px;">FRAGMENTS DISPERSED TO:</div>
+                    <div style="margin: 15px 0;">ALEX → "BRING THE SHELLS"</div>
+                    <div style="margin: 15px 0;">SAM → "BRING THE HEAT"</div>
+                    <div style="margin: 15px 0;">JORDAN → "BRING THE CITRUS"</div>
+                    <div style="margin: 15px 0;">CASEY → "BRING THE CRIMSON"</div>
+                </div>
+            </div>
+            
+            <div style="text-align: center; color: #666; margin: 20px;">
+                CONVERGENCE AT MIDNIGHT<br>
+                THE CORNER OF DESIRES
+            </div>
+            
+            <div style="flex: 1;"></div>
+            <button class="button" onclick="showScreen('home')">
+                AWAIT THE GATHERING
+            </button>
+        </div>
+        
+        <!-- Quest Accepted Screen -->
+        <div class="screen" id="quest-accepted">
+            <div class="mystical-symbol reveal-animation">⬢</div>
+            <h1>THE VEIL LIFTS</h1>
+            
+            <div class="success-message">
+                <div style="font-size: 24px; margin-bottom: 20px;">CONVERGENCE POINT REVEALED</div>
+                <div style="font-size: 18px; color: #9b59b6;">
+                    TACO TRUCK<br>
+                    CORNER OF 3RD & MAIN<br>
+                    MIDNIGHT
+                </div>
+                <div style="margin-top: 30px; color: #888;">
+                    YOUR OFFERING: HOT SAUCE<br>
+                    ("THE CRIMSON ESSENCE")
+                </div>
+            </div>
+            
+            <div style="flex: 1;"></div>
+            <button class="button" onclick="showScreen('home')">
+                JOURNEY FORTH
+            </button>
+        </div>
+    </div>
+    
+    <script>
+        function showScreen(screenId) {
+            document.querySelectorAll('.screen').forEach(screen => {
+                screen.classList.remove('active');
+            });
+            document.getElementById(screenId).classList.add('active');
+            
+            // Start countdown if showing receive quest
+            if (screenId === 'receive-quest') {
+                startCountdown();
+                startReveal();
+            }
+        }
+        
+        function selectQuest(type) {
+            // Visual feedback
+            event.target.closest('.fragment').style.background = 'rgba(138, 43, 226, 0.3)';
+            
+            // Pre-fill for demo
+            if (type === 'tacos') {
+                document.getElementById('quest-time').value = 'MIDNIGHT';
+                document.getElementById('quest-place').value = 'THE CORNER OF DESIRES';
+            }
+        }
+        
+        function sendSummons() {
+            showScreen('summons-sent');
+        }
+        
+        function acceptQuest() {
+            showScreen('quest-accepted');
+        }
+        
+        let countdownInterval;
+        function startCountdown() {
+            // Clear any existing countdown
+            if (countdownInterval) {
+                clearInterval(countdownInterval);
+            }
+            
+            let hours = 2, minutes = 47, seconds = 33;
+            const countdownEl = document.getElementById('countdown');
+            
+            countdownInterval = setInterval(() => {
+                seconds--;
+                if (seconds < 0) {
+                    seconds = 59;
+                    minutes--;
+                    if (minutes < 0) {
+                        minutes = 59;
+                        hours--;
+                    }
+                }
+                
+                countdownEl.textContent = 
+                    String(hours).padStart(2, '0') + ':' + 
+                    String(minutes).padStart(2, '0') + ':' + 
+                    String(seconds).padStart(2, '0');
+            }, 1000);
+        }
+        
+        let revealTimeout1, revealTimeout2, revealTimeout3, revealTimeout4;
+        function startReveal() {
+            // Clear any existing timeouts
+            clearTimeout(revealTimeout1);
+            clearTimeout(revealTimeout2);
+            clearTimeout(revealTimeout3);
+            clearTimeout(revealTimeout4);
+            
+            const msg = document.getElementById('cryptic-msg');
+            const location = document.getElementById('location-hint');
+            
+            // Reset to initial state
+            msg.className = 'cryptic-message';
+            msg.textContent = 'BRING THE CRIMSON ESSENCE';
+            location.innerHTML = '<span style="color: #666;">LOCATION REVEALS IN TIME...</span>';
+            
+            // Gradually reveal message
+            revealTimeout1 = setTimeout(() => {
+                msg.classList.add('revealing');
+                msg.textContent = 'BRING THE SAUCE OF FIRE';
+            }, 3000);
+            
+            revealTimeout2 = setTimeout(() => {
+                msg.classList.add('revealed');
+                msg.textContent = 'BRING HOT SAUCE';
+            }, 6000);
+            
+            // Reveal location hints
+            revealTimeout3 = setTimeout(() => {
+                location.innerHTML = '<span style="color: #9b59b6;">SOMEWHERE ON 3RD...</span>';
+            }, 8000);
+            
+            revealTimeout4 = setTimeout(() => {
+                location.innerHTML = '<span style="color: #9b59b6;">THE CORNER CALLS...</span>';
+            }, 11000);
+        }
+    </script>
+</body>
+</html>
