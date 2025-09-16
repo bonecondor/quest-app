@@ -12,7 +12,7 @@
     <div class="app-container">
         <!-- Home Screen -->
         <div class="screen active" id="home">
-            <div class="mystical-symbol">⬟</div>
+            <div class="mystical-symbol">◬◮</div>
             <h1>QUEST</h1>
             <div class="subtitle">SUMMON YOUR CIRCLE</div>
             <div style="flex: 1; min-height: 20px;"></div>
@@ -41,7 +41,7 @@
             <button class="button" onclick="showContactSelection()">
                 CHOOSE YOUR SEEKERS
             </button>
-            <button class="button secondary" onclick="showScreen('home')">
+            <button class="button" onclick="showScreen('home')" style="background: transparent; border-color: #333;">
                 ABANDON RITUAL
             </button>
             <div style="height: 20px;"></div>
@@ -65,7 +65,7 @@
             <button class="button" onclick="sendSummons()">
                 RELEASE THE SUMMONS
             </button>
-            <button class="button secondary" onclick="showScreen('create-quest')">
+            <button class="button" onclick="showScreen('create-quest')" style="background: transparent; border-color: #333;">
                 REASSIGN
             </button>
             <div style="height: 20px;"></div>
@@ -93,7 +93,7 @@
             <button class="button" onclick="acceptQuest()">
                 ACCEPT YOUR DESTINY
             </button>
-            <button class="button secondary" onclick="showScreen('home')">
+            <button class="button" onclick="showScreen('home')" style="background: transparent; border-color: #333;">
                 REFUSE THE CALL
             </button>
             <div style="height: 20px;"></div>
@@ -128,7 +128,7 @@
         
         <!-- Quest Accepted Screen -->
         <div class="screen" id="quest-accepted">
-            <div class="mystical-symbol reveal-animation">⬢</div>
+            <div class="mystical-symbol reveal-animation">◬◢</div>
             <h1>THE VEIL LIFTS</h1>
             
             <div class="success-message">
