@@ -15,17 +15,24 @@ let revealTimeouts = [];
 
 // Initialize the app when the page loads
 window.addEventListener('DOMContentLoaded', function() {
-    populateQuestTypes();
+    // Wait a moment for quests.js to load, then populate
+    setTimeout(populateQuestTypes, 100);
 });
 
-// Populate quest types from quests.js
+// Populate quest types - check for questTypes availability
 function populateQuestTypes() {
     const container = document.getElementById('quest-types-container');
     if (!container) return;
     
+    // Check if questTypes is available (from quests.js)
+    if (typeof window.questTypes === 'undefined') {
+        console.error('questTypes not available');
+        return;
+    }
+    
     container.innerHTML = '';
     
-    for (const [key, quest] of Object.entries(questTypes)) {
+    for (const [key, quest] of Object.entries(window.questTypes)) {
         const fragment = document.createElement('div');
         fragment.className = 'fragment';
         fragment.onclick = () => selectQuest(key);
@@ -37,7 +44,7 @@ function populateQuestTypes() {
     }
 }
 
-// Screen Navigation
+// Rest of the functions exactly as they were...
 function showScreen(screenId) {
     document.querySelectorAll('.screen').forEach(screen => {
         screen.classList.remove('active');
@@ -54,7 +61,6 @@ function showScreen(screenId) {
     }
 }
 
-// Quest Selection
 function selectQuest(type) {
     document.querySelectorAll('.fragment').forEach(f => f.classList.remove('selected'));
     
@@ -73,7 +79,6 @@ function selectQuest(type) {
     }
 }
 
-// Contact Selection
 function showContactSelection() {
     if (!currentQuest) {
         alert('Choose a quest type first!');
@@ -88,7 +93,7 @@ function showContactSelection() {
     
     contactsList.innerHTML = '';
     
-    const fragments = questTypes[currentQuest].fragments;
+    const fragments = window.questTypes[currentQuest].fragments;
     
     mockContacts.slice(0, 6).forEach((contact, index) => {
         const contactEl = document.createElement('div');
@@ -105,10 +110,9 @@ function showContactSelection() {
     showScreen('contact-selection');
 }
 
-// Toggle Contact Selection
 function toggleContact(contact, index) {
     const contactEl = event.currentTarget;
-    const fragments = questTypes[currentQuest].fragments;
+    const fragments = window.questTypes[currentQuest].fragments;
     
     if (selectedContacts.includes(contact)) {
         selectedContacts = selectedContacts.filter(c => c !== contact);
@@ -128,12 +132,11 @@ function toggleContact(contact, index) {
     updateAssignmentsList();
 }
 
-// Update Assignments Display
 function updateAssignmentsList() {
     const list = document.getElementById('assignment-list');
     if (!list || !currentQuest) return;
     
-    const fragments = questTypes[currentQuest].fragments;
+    const fragments = window.questTypes[currentQuest].fragments;
     
     list.innerHTML = '';
     
@@ -161,7 +164,6 @@ function updateAssignmentsList() {
     }
 }
 
-// Send Summons
 function sendSummons() {
     if (selectedContacts.length === 0) {
         alert('Select at least one seeker!');
@@ -194,16 +196,15 @@ function sendSummons() {
     showScreen('summons-sent');
 }
 
-// Accept Quest
 function acceptQuest() {
     let quest;
     let fragment;
     
-    if (currentQuest && questTypes[currentQuest]) {
-        quest = questTypes[currentQuest];
+    if (currentQuest && window.questTypes[currentQuest]) {
+        quest = window.questTypes[currentQuest];
         fragment = quest.fragments[Math.floor(Math.random() * quest.fragments.length)];
     } else {
-        quest = questTypes.tacos;
+        quest = window.questTypes.tacos;
         fragment = quest.fragments[0];
     }
     
@@ -230,7 +231,6 @@ function acceptQuest() {
     showScreen('quest-accepted');
 }
 
-// Countdown Timer
 function startCountdown() {
     if (countdownInterval) {
         clearInterval(countdownInterval);
@@ -246,3 +246,82 @@ function startCountdown() {
         if (seconds < 0) {
             seconds = 59;
             minutes--;
+            if (minutes < 0) {
+                minutes = 59;
+                hours--;
+                if (hours < 0) {
+                    clearInterval(countdownInterval);
+                    return;
+                }
+            }
+        }
+        
+        countdownEl.textContent = 
+            String(hours).padStart(2, '0') + ':' + 
+            String(minutes).padStart(2, '0') + ':' + 
+            String(seconds).padStart(2, '0');
+    }, 1000);
+}
+
+function startReveal() {
+    revealTimeouts.forEach(timeout => clearTimeout(timeout));
+    revealTimeouts = [];
+    
+    const msg = document.getElementById('cryptic-msg');
+    const location = document.getElementById('location-hint');
+    
+    if (!msg || !location) return;
+    
+    let quest;
+    let yourFragment;
+    
+    if (currentQuest && window.questTypes[currentQuest]) {
+        quest = window.questTypes[currentQuest];
+        yourFragment = quest.fragments[Math.floor(Math.random() * quest.fragments.length)];
+    } else {
+        quest = window.questTypes.tacos;
+        yourFragment = quest.fragments[0];
+    }
+    
+    const otherFragments = quest.fragments.filter(f => f !== yourFragment);
+    const fragment1 = otherFragments[0] || quest.fragments[0];
+    const fragment2 = otherFragments[1] || quest.fragments[1];
+    
+    msg.className = 'cryptic-message';
+    msg.textContent = yourFragment.cryptic;
+    location.innerHTML = '<span style="color: #666;">LOCATION REVEALS IN TIME...</span>';
+    
+    const participantsList = document.getElementById('participants-list');
+    if (participantsList) {
+        participantsList.innerHTML = `
+            <div class="participant">
+                <span>SEEKER ALPHA</span>
+                <span class="participant-role">${fragment1.cryptic}</span>
+            </div>
+            <div class="participant">
+                <span>SEEKER BETA</span>
+                <span class="participant-role">${fragment2.cryptic}</span>
+            </div>
+            <div class="participant">
+                <span>YOU</span>
+                <span class="participant-role">${yourFragment.cryptic}</span>
+            </div>
+        `;
+    }
+    
+    revealTimeouts.push(setTimeout(() => {
+        msg.classList.add('revealing');
+        const midReveal = yourFragment.cryptic.replace('BRING THE', 'ACQUIRE THE');
+        msg.textContent = midReveal;
+    }, 3000));
+    
+    revealTimeouts.push(setTimeout(() => {
+        msg.classList.add('revealed');
+        msg.textContent = `BRING: ${yourFragment.real.toUpperCase()}`;
+    }, 6000));
+    
+    revealTimeouts.push(setTimeout(() => {
+        location.innerHTML = `<span style="color: #9b59b6;">SOMEWHERE NEAR...</span>`;
+    }, 8000));
+    
+    revealTimeouts.push(setTi
