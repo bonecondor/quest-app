@@ -27,40 +27,6 @@ Messages gradually reveal as the convergence time approaches. Everyone arrives w
 - 💫 MOVEMENT CEREMONY (dance party)
 - 🔮 UNKNOWN PURPOSE (mystery event)
 
-## Technical Details
-
-Currently a web-based prototype built with:
-- Pure HTML/CSS/JS (no framework dependencies)
-- Mobile-responsive design
-- Progressive reveal animations
-- Countdown timers
-
-## Roadmap
-
-### v1 (Current)
-- [x] Basic UI flow
-- [x] Taco quest demo
-- [x] Progressive reveal mechanics
-- [x] Mobile responsive
-
-### v2 (Coming Soon)
-- [ ] More quest types
-- [ ] Contact selection interface
-- [ ] SMS integration (Twilio)
-- [ ] Real GPS proximity detection
-
-### v3 (Future)
-- [ ] User accounts & karma system
-- [ ] Sponsored quests
-- [ ] Quest history
-- [ ] Photo memories
-
-## Setup
-
-1. Clone this repository
-2. Open `index.html` in a browser
-3. Or visit the GitHub Pages link above
-
 ## Contact
 
-Built with mystery and mischief by [Your Name]
+Built with mystery and mischief by Birb
