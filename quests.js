@@ -1,4 +1,4 @@
-// Quest Definitions
+// Quest Definitions - Add your new quests here!
 const questTypes = {
     tacos: {
         icon: '🌮',
@@ -168,4 +168,3 @@ const questTypes = {
         ]
     }
 };
-window.questTypes = questTypes;
