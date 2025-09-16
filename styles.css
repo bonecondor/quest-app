@@ -51,7 +51,7 @@ body {
     min-height: 100%;
     display: none;
     flex-direction: column;
-    padding: 40px 20px 30px;
+    padding: 30px 20px 20px;  /* This should be small! */
     animation: fadeIn 0.5s;
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
@@ -224,8 +224,8 @@ h1 {
 .fragment-container {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 10px;
-    margin: 20px 0;
+    gap: 8px;
+    margin: 15px 0;
     max-height: 400px;
     overflow-y: auto;
     padding-right: 5px;
@@ -234,7 +234,7 @@ h1 {
 .fragment {
     background: rgba(138, 43, 226, 0.1);
     border: 1px solid rgba(138, 43, 226, 0.3);
-    padding: 15px;
+    padding: 12px;
     border-radius: 10px;
     text-align: center;
     cursor: pointer;
