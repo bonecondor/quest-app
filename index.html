@@ -6,7 +6,7 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <title>Quest - Summon Your Circle</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="styles.css?v=4">
 </head>
 <body>
     <div class="app-container">
@@ -16,9 +16,9 @@
             <h1>QUEST</h1>
             <div class="subtitle">SUMMON YOUR CIRCLE</div>
             <div style="flex: 1; min-height: 20px;"></div>
-<button class="button" onclick="showScreen('create-quest')">
-    CREATE A SUMMONING
-</button>
+            <button class="button" onclick="showScreen('create-quest')">
+                CREATE A SUMMONING
+            </button>
             <button class="button" onclick="showScreen('receive-quest')">
                 AWAITING SUMMONS
             </button>
@@ -72,3 +72,121 @@
         </div>
         
         <!-- Receive Quest Screen -->
+        <div class="screen" id="receive-quest">
+            <h1>YOU HAVE BEEN CHOSEN</h1>
+            <div class="countdown" id="countdown">02:47:33</div>
+            
+            <div class="quest-preview">
+                <div class="cryptic-message" id="cryptic-msg">
+                    BRING THE CRIMSON ESSENCE
+                </div>
+                <div class="location-hint" id="location-hint">
+                    <span style="color: #666;">LOCATION REVEALS IN TIME...</span>
+                </div>
+            </div>
+            
+            <div class="participants-list" id="participants-list">
+                <!-- Will be populated by JavaScript -->
+            </div>
+            
+            <div style="flex: 1; min-height: 20px;"></div>
+            <button class="button" onclick="acceptQuest()">
+                ACCEPT YOUR DESTINY
+            </button>
+            <button class="button secondary" onclick="showScreen('home')">
+                REFUSE THE CALL
+            </button>
+            <div style="height: 20px;"></div>
+        </div>
+        
+        <!-- Summons Sent Screen -->
+        <div class="screen" id="summons-sent">
+            <div class="mystical-symbol">✦</div>
+            <h1>THE SUMMONS FLIES</h1>
+            <div class="subtitle">YOUR CIRCLE HAS BEEN CALLED</div>
+            
+            <div class="quest-preview">
+                <div style="text-align: center; margin: 20px 0;">
+                    <div style="color: #9b59b6; margin-bottom: 10px;">FRAGMENTS DISPERSED TO:</div>
+                    <div id="final-assignments" style="margin: 15px 0;">
+                        <!-- Final assignments will be shown here -->
+                    </div>
+                </div>
+            </div>
+            
+            <div style="text-align: center; color: #666; margin: 20px;">
+                <div id="final-time">CONVERGENCE AT MIDNIGHT</div>
+                <div id="final-place">THE CORNER OF DESIRES</div>
+            </div>
+            
+            <div style="flex: 1; min-height: 20px;"></div>
+            <button class="button" onclick="showScreen('home')">
+                AWAIT THE GATHERING
+            </button>
+            <div style="height: 20px;"></div>
+        </div>
+        
+        <!-- Quest Accepted Screen -->
+        <div class="screen" id="quest-accepted">
+            <div class="mystical-symbol reveal-animation">⬢</div>
+            <h1>THE VEIL LIFTS</h1>
+            
+            <div class="success-message">
+                <div style="font-size: 24px; margin-bottom: 20px;">CONVERGENCE POINT REVEALED</div>
+                <div style="font-size: 18px; color: #9b59b6;" id="reveal-details">
+                    <!-- Will be populated by JavaScript -->
+                </div>
+                <div style="margin-top: 30px; color: #888;" id="reveal-task">
+                    <!-- Will be populated by JavaScript -->
+                </div>
+            </div>
+            
+            <div style="flex: 1; min-height: 20px;"></div>
+            <button class="button" onclick="showScreen('home')">
+                JOURNEY FORTH
+            </button>
+            <div style="height: 20px;"></div>
+        </div>
+    </div>
+    
+    <script src="quests.js"></script>
+    <script src="app.js"></script>
+    
+    <!-- Backup functions to ensure buttons work -->
+    <script>
+    function showScreen(screenId) {
+        document.querySelectorAll('.screen').forEach(screen => {
+            screen.classList.remove('active');
+        });
+        document.getElementById(screenId).classList.add('active');
+        
+        // Start countdown if showing receive quest
+        if (screenId === 'receive-quest' && typeof startCountdown !== 'undefined') {
+            startCountdown();
+            startReveal();
+        }
+    }
+    
+    function showContactSelection() {
+        if (typeof currentQuest === 'undefined' || !currentQuest) {
+            alert('Choose a quest type first!');
+            return;
+        }
+        showScreen('contact-selection');
+    }
+    
+    function sendSummons() {
+        showScreen('summons-sent');
+    }
+    
+    function acceptQuest() {
+        showScreen('quest-accepted');
+    }
+    
+    // Ensure basic app functionality
+    if (typeof window.showScreen === 'undefined') {
+        window.showScreen = showScreen;
+    }
+    </script>
+</body>
+</html>
