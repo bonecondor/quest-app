@@ -45,13 +45,13 @@ body {
     }
 }
 
-/* Screen Layout */
+/* Screen Layout - UPDATED with less padding */
 .screen {
     width: 100%;
     min-height: 100%;
     display: none;
     flex-direction: column;
-    padding: 60px 30px 40px;
+    padding: 40px 20px 30px;  /* Reduced from 60px top padding */
     animation: fadeIn 0.5s;
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
@@ -95,6 +95,28 @@ h1 {
 @keyframes pulse {
     0%, 100% { opacity: 0.6; transform: scale(1); }
     50% { opacity: 1; transform: scale(1.05); }
+}
+
+/* Mobile adjustments for spacing - UPDATED */
+@media (max-width: 430px) {
+    .screen {
+        padding: 30px 20px 20px;  /* Even less padding on mobile */
+    }
+    
+    h1 {
+        font-size: 24px;  /* Slightly smaller heading on mobile */
+        margin-bottom: 15px;
+    }
+    
+    .subtitle {
+        margin-bottom: 25px;  /* Less space after subtitle */
+        font-size: 12px;
+    }
+    
+    .mystical-symbol {
+        font-size: 60px;  /* Reduced from 80px */
+        margin: 20px 0;  /* Reduced from 40px */
+    }
 }
 
 /* Buttons */
@@ -173,12 +195,12 @@ h1 {
     filter: blur(0);
 }
 
-/* Fragment Grid */
+/* Fragment Grid - UPDATED to be more compact */
 .fragment-container {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 15px;
-    margin: 30px 0;
+    gap: 10px;  /* Reduced from 15px */
+    margin: 20px 0;  /* Reduced from 30px */
     max-height: 400px;
     overflow-y: auto;
     padding-right: 5px;
@@ -187,7 +209,7 @@ h1 {
 .fragment {
     background: rgba(138, 43, 226, 0.1);
     border: 1px solid rgba(138, 43, 226, 0.3);
-    padding: 20px;
+    padding: 15px;  /* Reduced from 20px */
     border-radius: 10px;
     text-align: center;
     cursor: pointer;
@@ -214,13 +236,14 @@ h1 {
 }
 
 .fragment-icon {
-    font-size: 30px;
-    margin-bottom: 10px;
+    font-size: 24px;  /* Reduced from 30px */
+    margin-bottom: 8px;  /* Reduced from 10px */
 }
 
 .fragment-text {
-    font-size: 12px;
+    font-size: 11px;  /* Reduced from 12px */
     color: #888;
+    letter-spacing: 1px;
 }
 
 /* Countdown Timer */
