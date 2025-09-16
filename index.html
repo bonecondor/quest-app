@@ -41,7 +41,7 @@
             <button class="button" onclick="showContactSelection()">
                 CHOOSE YOUR SEEKERS
             </button>
-            <button class="button" onclick="showScreen('home')" style="background: transparent; border-color: #333;">
+            <button class="button secondary" onclick="showScreen('home')">
                 ABANDON RITUAL
             </button>
             <div style="height: 20px;"></div>
@@ -65,91 +65,10 @@
             <button class="button" onclick="sendSummons()">
                 RELEASE THE SUMMONS
             </button>
-            <button class="button" onclick="showScreen('create-quest')" style="background: transparent; border-color: #333;">
+            <button class="button secondary" onclick="showScreen('create-quest')">
                 REASSIGN
             </button>
             <div style="height: 20px;"></div>
         </div>
         
         <!-- Receive Quest Screen -->
-        <div class="screen" id="receive-quest">
-            <h1>YOU HAVE BEEN CHOSEN</h1>
-            <div class="countdown" id="countdown">02:47:33</div>
-            
-            <div class="quest-preview">
-                <div class="cryptic-message" id="cryptic-msg">
-                    BRING THE CRIMSON ESSENCE
-                </div>
-                <div class="location-hint" id="location-hint">
-                    <span style="color: #666;">LOCATION REVEALS IN TIME...</span>
-                </div>
-            </div>
-            
-            <div class="participants-list" id="participants-list">
-                <!-- Will be populated by JavaScript -->
-            </div>
-            
-            <div style="flex: 1; min-height: 20px;"></div>
-            <button class="button" onclick="acceptQuest()">
-                ACCEPT YOUR DESTINY
-            </button>
-            <button class="button" onclick="showScreen('home')" style="background: transparent; border-color: #333;">
-                REFUSE THE CALL
-            </button>
-            <div style="height: 20px;"></div>
-        </div>
-        
-        <!-- Summons Sent Screen -->
-        <div class="screen" id="summons-sent">
-            <div class="mystical-symbol">✦</div>
-            <h1>THE SUMMONS FLIES</h1>
-            <div class="subtitle">YOUR CIRCLE HAS BEEN CALLED</div>
-            
-            <div class="quest-preview">
-                <div style="text-align: center; margin: 20px 0;">
-                    <div style="color: #9b59b6; margin-bottom: 10px;">FRAGMENTS DISPERSED TO:</div>
-                    <div id="final-assignments" style="margin: 15px 0;">
-                        <!-- Final assignments will be shown here -->
-                    </div>
-                </div>
-            </div>
-            
-            <div style="text-align: center; color: #666; margin: 20px;">
-                <div id="final-time">CONVERGENCE AT MIDNIGHT</div>
-                <div id="final-place">THE CORNER OF DESIRES</div>
-            </div>
-            
-            <div style="flex: 1; min-height: 20px;"></div>
-            <button class="button" onclick="showScreen('home')">
-                AWAIT THE GATHERING
-            </button>
-            <div style="height: 20px;"></div>
-        </div>
-        
-        <!-- Quest Accepted Screen -->
-        <div class="screen" id="quest-accepted">
-            <div class="mystical-symbol reveal-animation">⬢</div>
-            <h1>THE VEIL LIFTS</h1>
-            
-            <div class="success-message">
-                <div style="font-size: 24px; margin-bottom: 20px;">CONVERGENCE POINT REVEALED</div>
-                <div style="font-size: 18px; color: #9b59b6;" id="reveal-details">
-                    <!-- Will be populated by JavaScript -->
-                </div>
-                <div style="margin-top: 30px; color: #888;" id="reveal-task">
-                    <!-- Will be populated by JavaScript -->
-                </div>
-            </div>
-            
-            <div style="flex: 1; min-height: 20px;"></div>
-            <button class="button" onclick="showScreen('home')">
-                JOURNEY FORTH
-            </button>
-            <div style="height: 20px;"></div>
-        </div>
-    </div>
-    
-    <script src="quests.js"></script>
-    <script src="app.js"></script>
-</body>
-</html>
