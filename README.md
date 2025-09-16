@@ -3,7 +3,7 @@
 A cryptic summoning app that orchestrates spontaneous IRL gatherings through mysterious, collaborative quests.
 
 ## Live Demo
-[Try Quest Here](https://yourusername.github.io/quest-app/)
+[Try Quest Here](https://bonecondor.github.io/quest-app/)
 
 ## What is Quest?
 
