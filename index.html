@@ -6,7 +6,7 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <title>Quest - Summon Your Circle</title>
-    <link rel="stylesheet" href="styles.css?v=4">
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <div class="app-container">
@@ -151,42 +151,5 @@
     
     <script src="quests.js"></script>
     <script src="app.js"></script>
-    
-    <!-- Backup functions to ensure buttons work -->
-    <script>
-    function showScreen(screenId) {
-        document.querySelectorAll('.screen').forEach(screen => {
-            screen.classList.remove('active');
-        });
-        document.getElementById(screenId).classList.add('active');
-        
-        // Start countdown if showing receive quest
-        if (screenId === 'receive-quest' && typeof startCountdown !== 'undefined') {
-            startCountdown();
-            startReveal();
-        }
-    }
-    
-    function showContactSelection() {
-        if (typeof currentQuest === 'undefined' || !currentQuest) {
-            alert('Choose a quest type first!');
-            return;
-        }
-        showScreen('contact-selection');
-    }
-    
-    function sendSummons() {
-        showScreen('summons-sent');
-    }
-    
-    function acceptQuest() {
-        showScreen('quest-accepted');
-    }
-    
-    // Ensure basic app functionality
-    if (typeof window.showScreen === 'undefined') {
-        window.showScreen = showScreen;
-    }
-    </script>
 </body>
 </html>
